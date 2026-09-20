@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { listDocuments } from "@/lib/documents.functions";
 import { Database, FileText, CheckCircle2, ShieldCheck, Cpu, Layers, Sparkles, Terminal, Activity, ChevronRight } from "lucide-react";
 
 interface NodeData {
@@ -10,7 +12,7 @@ interface NodeData {
   sourceDoc?: string;
 }
 
-const GRAPH_NODES: { layer: string; nodes: NodeData[] }[] = [
+const DEFAULT_NODES: { layer: string; nodes: NodeData[] }[] = [
   {
     layer: "Source Documents",
     nodes: [
@@ -43,17 +45,60 @@ const GRAPH_NODES: { layer: string; nodes: NodeData[] }[] = [
 ];
 
 export function EvidenceGraph() {
+  const { data: realDocs } = useQuery({
+    queryKey: ["documents"],
+    queryFn: () => listDocuments({ data: {} }),
+    staleTime: 5000,
+  });
+
+  const activeNodes: { layer: string; nodes: NodeData[] }[] = (realDocs && realDocs.length > 0)
+    ? [
+        {
+          layer: "Source Documents",
+          nodes: realDocs.slice(0, 4).map((d): NodeData => ({
+            id: d.id,
+            label: d.filename,
+            type: "document",
+            preview: `Status: ${d.processing_status} | ${d.chunk_count ?? 0} vectors indexed`,
+          })),
+        },
+        {
+          layer: "Vector Passages (3072D)",
+          nodes: realDocs.slice(0, 3).map((d, idx): NodeData => ({
+            id: `pas-${d.id}`,
+            label: `Passage #${100 + idx} (${d.chunk_count ?? 1} chunks)`,
+            type: "passage",
+            score: 0.94 + idx * 0.02,
+            sourceDoc: d.filename,
+            preview: `Extracted passage vector from ${d.filename}`,
+          })),
+        },
+        {
+          layer: "Reranked Evidence",
+          nodes: realDocs.slice(0, 2).map((d, idx): NodeData => ({
+            id: `ev-${d.id}`,
+            label: `Evidence Chunk ${String.fromCharCode(65 + idx)}`,
+            type: "evidence",
+            score: 0.97 + idx * 0.01,
+            preview: `High-confidence reranked vector context from ${d.filename}`,
+          })),
+        },
+        DEFAULT_NODES[3],
+      ]
+    : DEFAULT_NODES;
+
   const [activeLayer, setActiveLayer] = useState(0);
-  const [selectedNode, setSelectedNode] = useState<NodeData>(GRAPH_NODES[1].nodes[0]);
+  const [selectedNode, setSelectedNode] = useState<NodeData>(activeNodes[0].nodes[0]);
   const [isSimulating, setIsSimulating] = useState(true);
 
   useEffect(() => {
     if (!isSimulating) return;
     const interval = setInterval(() => {
-      setActiveLayer((prev) => (prev + 1) % GRAPH_NODES.length);
+      setActiveLayer((prev) => (prev + 1) % activeNodes.length);
     }, 1800);
-    return () => clearInterval(interval);
-  }, [isSimulating]);
+    return () => window.clearInterval(interval);
+  }, [isSimulating, activeNodes.length]);
+
 
   return (
     <div className="rounded-3xl border border-neutral-800 bg-neutral-950 text-white p-6 sm:p-8 shadow-2xl relative overflow-hidden font-['Space_Grotesk',sans-serif]">
@@ -83,7 +128,7 @@ export function EvidenceGraph() {
 
       {/* Interactive Node Graph Pipeline */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 relative z-10">
-        {GRAPH_NODES.map((column, colIdx) => (
+        {activeNodes.map((column, colIdx) => (
           <div
             key={column.layer}
             className={`flex flex-col gap-3 p-4 rounded-2xl border transition-all duration-300 ${
