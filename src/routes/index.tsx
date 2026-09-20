@@ -68,7 +68,7 @@ function Landing() {
       </div>
 
       {/* React Bits FaultyTerminal Ambient Background Layer */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-75">
         <FaultyTerminal
           scale={1.5}
           gridMul={[2, 1]}

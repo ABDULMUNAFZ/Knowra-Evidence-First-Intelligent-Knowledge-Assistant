@@ -233,9 +233,11 @@ void main() {
       float coverage = clamp(smoothstep(0.0, 0.72, energy) * 0.9, 0.0, 0.9);
       vec3 ink = clamp(col * 0.42, 0.0, 0.76);
       col = mix(vec3(1.0), ink, coverage);
+      gl_FragColor = vec4(col, 1.0);
+    } else {
+      float alpha = clamp(max(max(col.r, col.g), col.b) * 3.0, 0.0, 1.0);
+      gl_FragColor = vec4(col, alpha);
     }
-
-    gl_FragColor = vec4(col, 1.0);
 }
 `;
 
