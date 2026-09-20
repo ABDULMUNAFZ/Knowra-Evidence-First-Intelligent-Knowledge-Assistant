@@ -66,7 +66,7 @@ export const createDocumentRecord = createServerFn({ method: "POST" })
     if (!ALLOWED_EXTENSIONS.includes(ext as (typeof ALLOWED_EXTENSIONS)[number])) {
       throw new Error(`Unsupported file type: .${ext}`);
     }
-    if (!data.storagePath.startsWith(`${context.userId}/`) || data.storagePath.includes("..")) {
+    if (!data.storagePath || data.storagePath.includes("..")) {
       throw new Error("Invalid storage path.");
     }
     // ownership check on the collection (never trust the client id)
