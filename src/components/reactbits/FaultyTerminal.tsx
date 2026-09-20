@@ -289,7 +289,7 @@ export default function FaultyTerminal({
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     const ctn = containerRef.current;
-    if (!ctn) return;
+    if (!ctn || typeof window === 'undefined') return;
     const rect = ctn.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width;
     const y = 1 - (e.clientY - rect.top) / rect.height;
@@ -302,14 +302,14 @@ export default function FaultyTerminal({
 
     let renderer: Renderer;
     try {
-      renderer = new Renderer({ dpr });
+      renderer = new Renderer({ dpr, alpha: true, premultipliedAlpha: false });
       rendererRef.current = renderer;
     } catch {
       return;
     }
 
     const gl = renderer.gl;
-    gl.clearColor(lightMode ? 1 : 0, lightMode ? 1 : 0, lightMode ? 1 : 0, 1);
+    gl.clearColor(0, 0, 0, 0);
 
     const geometry = new Triangle(gl);
 
@@ -346,6 +346,14 @@ export default function FaultyTerminal({
     programRef.current = program;
 
     const mesh = new Mesh(gl, { geometry, program });
+
+    gl.canvas.style.position = 'absolute';
+    gl.canvas.style.top = '0';
+    gl.canvas.style.left = '0';
+    gl.canvas.style.width = '100%';
+    gl.canvas.style.height = '100%';
+    gl.canvas.style.display = 'block';
+    gl.canvas.style.pointerEvents = 'none';
 
     function resize() {
       if (!ctn || !renderer) return;
@@ -402,12 +410,12 @@ export default function FaultyTerminal({
     rafRef.current = requestAnimationFrame(update);
     ctn.appendChild(gl.canvas);
 
-    if (mouseReact) ctn.addEventListener('mousemove', handleMouseMove);
+    if (mouseReact && typeof window !== 'undefined') window.addEventListener('mousemove', handleMouseMove);
 
     return () => {
       cancelAnimationFrame(rafRef.current);
       resizeObserver.disconnect();
-      if (mouseReact) ctn.removeEventListener('mousemove', handleMouseMove);
+      if (mouseReact && typeof window !== 'undefined') window.removeEventListener('mousemove', handleMouseMove);
       if (gl.canvas.parentElement === ctn) ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
       loadAnimationStartRef.current = 0;

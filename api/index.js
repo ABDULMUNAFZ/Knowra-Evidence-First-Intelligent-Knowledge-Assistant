@@ -1,10 +1,37 @@
+import fs from "node:fs";
+import path from "node:path";
 import server from "../dist/server/server.js";
+
+const MIME_TYPES = {
+  ".js": "application/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".woff2": "font/woff2",
+  ".txt": "text/plain; charset=utf-8",
+};
 
 export default async function handler(req, res) {
   try {
     const protocol = req.headers["x-forwarded-proto"] || "https";
     const host = req.headers["x-forwarded-host"] || req.headers.host || "localhost";
     const url = new URL(req.url, `${protocol}://${host}`);
+
+    // Direct static asset serving fallback
+    const staticFilePath = path.join(process.cwd(), "dist", "client", url.pathname);
+    if (fs.existsSync(staticFilePath) && fs.statSync(staticFilePath).isFile()) {
+      const ext = path.extname(staticFilePath).toLowerCase();
+      const contentType = MIME_TYPES[ext] || "application/octet-stream";
+      res.statusCode = 200;
+      res.setHeader("content-type", contentType);
+      res.setHeader("cache-control", "public, max-age=31536000, immutable");
+      const fileBuffer = fs.readFileSync(staticFilePath);
+      res.end(fileBuffer);
+      return;
+    }
 
     const headers = new Headers();
     for (const [key, val] of Object.entries(req.headers)) {
