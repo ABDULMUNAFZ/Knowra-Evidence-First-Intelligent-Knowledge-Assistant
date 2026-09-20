@@ -17,6 +17,7 @@ import { KnowraWordmark, KnowraMark } from "@/components/knowra/logo";
 import { CollectionProvider } from "@/hooks/use-active-collection";
 import { CommandPalette } from "@/components/knowra/command-palette";
 import { Toaster } from "@/components/ui/sonner";
+import TextCursor from "@/components/reactbits/TextCursor";
 
 export const Route = createFileRoute("/_authenticated/app")({
   component: WorkspaceLayout,
@@ -40,13 +41,20 @@ function WorkspaceLayout() {
     exact ? pathname === to || pathname === `${to}/` : pathname.startsWith(to);
 
   async function signOut() {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("knowra_demo_session");
+      sessionStorage.removeItem("knowra_demo_session");
+    }
     await supabase.auth.signOut();
     void navigate({ to: "/auth" });
   }
 
   return (
     <CollectionProvider>
-      <div className="bg-background min-h-screen">
+      <div className="bg-background min-h-screen relative">
+        {/* Interactive TextCursor Trail from React Bits */}
+        <TextCursor text="AI" spacing={75} maxPoints={6} />
+        
         {/* Top bar */}
         <header className="glass sticky top-0 z-30 flex h-14 items-center gap-3 px-4">
           <button

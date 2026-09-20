@@ -23,12 +23,12 @@ interface TrailItem {
 
 const TextCursor: React.FC<TextCursorProps> = ({
   text = 'AI',
-  spacing = 70,
+  spacing = 50,
   followMouseDirection = true,
   randomFloat = true,
-  exitDuration = 0.4,
-  removalInterval = 25,
-  maxPoints = 7
+  exitDuration = 0.35,
+  removalInterval = 20,
+  maxPoints = 8
 }) => {
   const [trail, setTrail] = useState<TrailItem[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,10 +36,14 @@ const TextCursor: React.FC<TextCursorProps> = ({
   const idCounter = useRef<number>(0);
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    let mouseX = e.clientX;
+    let mouseY = e.clientY;
+
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    }
 
     setTrail(prev => {
       let newTrail = [...prev];
@@ -50,8 +54,8 @@ const TextCursor: React.FC<TextCursorProps> = ({
           y: mouseY,
           angle: 0,
           ...(randomFloat && {
-            randomX: Math.random() * 10 - 5,
-            randomY: Math.random() * 10 - 5,
+            randomX: Math.random() * 8 - 4,
+            randomY: Math.random() * 8 - 4,
             randomRotate: Math.random() * 10 - 5
           })
         });
@@ -62,27 +66,20 @@ const TextCursor: React.FC<TextCursorProps> = ({
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance >= spacing) {
           let rawAngle = (Math.atan2(dy, dx) * 180) / Math.PI;
-
           rawAngle = ((rawAngle + 180) % 360) - 180;
-
           const computedAngle = followMouseDirection ? rawAngle : 0;
-          const steps = Math.floor(distance / spacing);
-          for (let i = 1; i <= steps; i++) {
-            const t = (spacing * i) / distance;
-            const newX = last.x + dx * t;
-            const newY = last.y + dy * t;
-            newTrail.push({
-              id: idCounter.current++,
-              x: newX,
-              y: newY,
-              angle: computedAngle,
-              ...(randomFloat && {
-                randomX: Math.random() * 10 - 5,
-                randomY: Math.random() * 10 - 5,
-                randomRotate: Math.random() * 10 - 5
-              })
-            });
-          }
+
+          newTrail.push({
+            id: idCounter.current++,
+            x: mouseX,
+            y: mouseY,
+            angle: computedAngle,
+            ...(randomFloat && {
+              randomX: Math.random() * 8 - 4,
+              randomY: Math.random() * 8 - 4,
+              randomRotate: Math.random() * 10 - 5
+            })
+          });
         }
       }
       if (newTrail.length > maxPoints) {
@@ -94,18 +91,16 @@ const TextCursor: React.FC<TextCursorProps> = ({
   };
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    container.addEventListener('mousemove', handleMouseMove);
+    if (typeof window === 'undefined') return;
+    window.addEventListener('mousemove', handleMouseMove);
     return () => {
-      container.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (Date.now() - lastMoveTimeRef.current > 100) {
+      if (Date.now() - lastMoveTimeRef.current > 80) {
         setTrail(prev => (prev.length > 0 ? prev.slice(1) : prev));
       }
     }, removalInterval);
@@ -113,52 +108,44 @@ const TextCursor: React.FC<TextCursorProps> = ({
   }, [removalInterval]);
 
   return (
-    <div ref={containerRef} className="w-full h-full relative">
-      <div className="absolute inset-0 pointer-events-none z-30">
-        <AnimatePresence>
-          {trail.map(item => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, scale: 0.8, rotate: item.angle }}
-              animate={{
-                opacity: 0.9,
-                scale: 1,
-                x: randomFloat ? [0, item.randomX || 0, 0] : 0,
-                y: randomFloat ? [0, item.randomY || 0, 0] : 0,
-                rotate: randomFloat ? [item.angle, item.angle + (item.randomRotate || 0), item.angle] : item.angle
-              }}
-              exit={{ opacity: 0, scale: 0.3 }}
-              transition={{
-                opacity: { duration: exitDuration, ease: 'easeOut' },
-                ...(randomFloat && {
-                  x: {
-                    duration: 2,
-                    ease: 'easeInOut',
-                    repeat: Infinity,
-                    repeatType: 'mirror'
-                  },
-                  y: {
-                    duration: 2,
-                    ease: 'easeInOut',
-                    repeat: Infinity,
-                    repeatType: 'mirror'
-                  },
-                  rotate: {
-                    duration: 2,
-                    ease: 'easeInOut',
-                    repeat: Infinity,
-                    repeatType: 'mirror'
-                  }
-                })
-              }}
-              className="absolute select-none whitespace-nowrap font-mono text-sm font-extrabold tracking-widest text-indigo-400 drop-shadow-[0_0_12px_rgba(129,140,248,0.9)] bg-indigo-950/40 border border-indigo-500/30 px-2 py-0.5 rounded-full backdrop-blur-md"
-              style={{ left: item.x, top: item.y }}
-            >
-              {text}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+    <div ref={containerRef} className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+      <AnimatePresence>
+        {trail.map(item => (
+          <motion.div
+            key={item.id}
+            initial={{ opacity: 0, scale: 0.6, rotate: item.angle }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              x: randomFloat ? [0, item.randomX || 0, 0] : 0,
+              y: randomFloat ? [0, item.randomY || 0, 0] : 0,
+              rotate: randomFloat ? [item.angle, item.angle + (item.randomRotate || 0), item.angle] : item.angle
+            }}
+            exit={{ opacity: 0, scale: 0.2 }}
+            transition={{
+              opacity: { duration: exitDuration, ease: 'easeOut' },
+              ...(randomFloat && {
+                x: {
+                  duration: 1.5,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                  repeatType: 'mirror'
+                },
+                y: {
+                  duration: 1.5,
+                  ease: 'easeInOut',
+                  repeat: Infinity,
+                  repeatType: 'mirror'
+                }
+              })
+            }}
+            className="absolute select-none whitespace-nowrap font-mono text-xs font-black tracking-widest text-white bg-[#ff4500] border border-white/40 px-2.5 py-1 rounded-full shadow-lg shadow-[#ff4500]/40 backdrop-blur-md"
+            style={{ left: item.x, top: item.y }}
+          >
+            {text}
+          </motion.div>
+        ))}
+      </AnimatePresence>
     </div>
   );
 };
