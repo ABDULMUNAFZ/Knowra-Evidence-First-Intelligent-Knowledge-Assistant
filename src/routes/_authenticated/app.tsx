@@ -51,14 +51,14 @@ function WorkspaceLayout() {
 
   return (
     <CollectionProvider>
-      <div className="bg-background min-h-screen relative">
+      <div className="bg-[#fcfbf9] text-neutral-900 font-['Space_Grotesk',sans-serif] min-h-screen relative overflow-x-hidden">
         {/* Interactive TextCursor Trail from React Bits */}
         <TextCursor text="AI" spacing={75} maxPoints={6} />
         
-        {/* Top bar */}
-        <header className="glass sticky top-0 z-30 flex h-14 items-center gap-3 px-4">
+        {/* Editorial Floating Header Bar */}
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-neutral-200 bg-white/90 px-6 backdrop-blur-md shadow-sm">
           <button
-            className="text-muted-foreground hover:text-foreground -ml-1 p-2 md:hidden"
+            className="text-neutral-600 hover:text-black -ml-1 p-2 md:hidden"
             onClick={() => setMobileNavOpen((v) => !v)}
             aria-label="Toggle navigation"
           >
@@ -72,42 +72,43 @@ function WorkspaceLayout() {
           </Link>
           <button
             onClick={() => setPaletteOpen(true)}
-            className="text-muted-foreground hover:border-[var(--border-strong)] hover:text-foreground mx-auto flex h-9 w-full max-w-md items-center gap-2 rounded-lg border px-3 text-sm transition-colors"
+            className="text-neutral-500 hover:border-neutral-400 hover:text-black mx-auto flex h-10 w-full max-w-md items-center gap-2 rounded-full border border-neutral-200 bg-neutral-50/80 px-4 text-xs font-medium transition-colors shadow-inner"
           >
-            <CommandIcon className="size-3.5" />
-            Search knowledge...
-            <kbd className="ml-auto hidden font-mono text-[10px] opacity-60 sm:block">⌘K</kbd>
+            <CommandIcon className="size-3.5 text-[#ff4500]" />
+            <span>Search knowledge, passages & documents...</span>
+            <kbd className="ml-auto hidden font-mono text-[10px] bg-neutral-200 text-neutral-700 px-2 py-0.5 rounded-full font-bold sm:block">⌘K</kbd>
           </button>
-          <Button variant="ghost" size="sm" onClick={signOut} aria-label="Sign out">
-            <LogOut className="size-4" />
+          <Button variant="ghost" size="sm" onClick={signOut} className="rounded-full hover:bg-neutral-100 text-neutral-700 font-medium text-xs gap-1.5" aria-label="Sign out">
+            <LogOut className="size-4 text-[#ff4500]" />
+            <span className="hidden sm:inline">Sign Out</span>
           </Button>
         </header>
 
-        <div className="flex">
+        <div className="flex max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
           {/* Desktop sidebar */}
           <nav
             className={cn(
-              "bg-surface fixed inset-y-14 left-0 z-20 w-60 shrink-0 border-r p-3 md:sticky md:top-14 md:block md:h-[calc(100vh-3.5rem)]",
+              "bg-white fixed inset-y-16 left-0 z-20 w-64 shrink-0 border-r border-neutral-200 p-4 md:sticky md:top-20 md:block md:h-[calc(100vh-6rem)] rounded-3xl shadow-sm md:border",
               mobileNavOpen ? "block" : "hidden",
             )}
           >
-            <p className="text-muted-foreground px-3 py-2 text-[10px] tracking-[0.2em] uppercase">
-              Knowledge
+            <p className="font-['Chakra_Petch',sans-serif] text-[11px] font-bold tracking-widest uppercase text-[#ff4500] px-3 py-2">
+              KNOWLEDGE WORKSPACE
             </p>
-            <ul className="space-y-1">
+            <ul className="mt-2 space-y-1.5">
               {NAV.map((item) => (
                 <li key={item.to}>
                   <Link
                     to={item.to}
                     onClick={() => setMobileNavOpen(false)}
                     className={cn(
-                      "flex min-h-11 items-center gap-3 rounded-lg px-3 text-sm transition-colors",
+                      "flex min-h-12 items-center gap-3 rounded-2xl px-4 text-xs font-bold transition-all",
                       isActive(item.to, item.exact)
-                        ? "bg-elevated text-foreground"
-                        : "text-muted-foreground hover:text-foreground hover:bg-[var(--elevated)]/60",
+                        ? "bg-neutral-950 text-white font-['Chakra_Petch',sans-serif] tracking-wider shadow-md"
+                        : "text-neutral-600 hover:text-black hover:bg-neutral-100/80 font-['Space_Grotesk',sans-serif]",
                     )}
                   >
-                    <item.icon className="size-4" />
+                    <item.icon className={cn("size-4", isActive(item.to, item.exact) ? "text-[#ff4500]" : "text-neutral-500")} />
                     {item.label}
                   </Link>
                 </li>
@@ -115,20 +116,20 @@ function WorkspaceLayout() {
             </ul>
           </nav>
 
-          <main className="min-w-0 flex-1 pb-20 md:pb-0">
+          <main className="min-w-0 flex-1 pl-0 md:pl-8 pb-20 md:pb-0">
             <Outlet />
           </main>
         </div>
 
         {/* Mobile bottom navigation */}
-        <nav className="glass fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 md:hidden">
+        <nav className="border-t border-neutral-200 bg-white/95 backdrop-blur-md fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 md:hidden shadow-lg">
           {NAV.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               className={cn(
-                "flex min-h-14 flex-col items-center justify-center gap-1 text-[10px]",
-                isActive(item.to, item.exact) ? "text-primary" : "text-muted-foreground",
+                "flex min-h-14 flex-col items-center justify-center gap-1 text-[10px] font-bold",
+                isActive(item.to, item.exact) ? "text-[#ff4500]" : "text-neutral-500",
               )}
             >
               <item.icon className="size-5" />

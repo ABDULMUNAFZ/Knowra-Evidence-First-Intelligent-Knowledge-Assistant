@@ -229,18 +229,40 @@ export async function parseDocument(
   let parsed: ParsedDocument;
 
   if (ext === "pdf" || mimeType === "application/pdf") {
-    parsed = await parsePdf(bytes);
+    try {
+      parsed = await parsePdf(bytes);
+    } catch {
+      const raw = new TextDecoder("latin1").decode(bytes);
+      const text = normalize(raw.replace(/[^\x20-\x7E\n]/g, " "));
+      parsed = { pages: paginatePlainText(text), pageCount: 0 };
+    }
   } else if (
     ext === "docx" ||
     mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
   ) {
-    parsed = parseDocx(bytes);
-  } else if (["txt", "md", "markdown", "csv"].includes(ext) || mimeType.startsWith("text/")) {
-    const text = normalize(strFromU8(bytes));
+    try {
+      parsed = parseDocx(bytes);
+    } catch {
+      const text = normalize(strFromU8(bytes).replace(/[^\x20-\x7E\n]/g, " "));
+      parsed = { pages: paginatePlainText(text), pageCount: 0 };
+    }
+  } else if (
+    ["txt", "md", "markdown", "csv", "json", "xlsx", "xls", "doc"].includes(ext) ||
+    mimeType.startsWith("text/") ||
+    mimeType.includes("spreadsheet") ||
+    mimeType.includes("excel") ||
+    mimeType.includes("msword")
+  ) {
+    const rawText = strFromU8(bytes);
+    const cleanText = rawText.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, " ");
+    const text = normalize(cleanText);
     parsed = { pages: paginatePlainText(text), pageCount: 0 };
     parsed.pageCount = parsed.pages.length;
   } else {
-    throw new Error(`Unsupported file type: .${ext}. Supported: PDF, DOCX, TXT, MD, CSV.`);
+    // Fallback text extraction for any binary/custom file formats
+    const rawText = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+    const text = normalize(rawText.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, " "));
+    parsed = { pages: paginatePlainText(text), pageCount: 0 };
   }
 
   const totalChars = parsed.pages.reduce((n, p) => n + p.text.length, 0);

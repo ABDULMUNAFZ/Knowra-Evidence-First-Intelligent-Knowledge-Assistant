@@ -108,21 +108,27 @@ function Ask() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mx-auto max-w-4xl py-4 sm:py-6 space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-neutral-200 pb-5">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Ask Knowra</h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Grounded in {active?.name ?? "your collection"} · every claim traceable.
+          <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3.5 py-1 text-xs font-bold tracking-widest text-[#ff4500] uppercase shadow-sm font-['Chakra_Petch',sans-serif] mb-2">
+            <Sparkles className="size-3.5 text-[#ff4500]" />
+            <span>Verbatim Grounded RAG</span>
+          </div>
+          <h1 className="font-['Orbitron',sans-serif] text-3xl font-black text-neutral-950 tracking-tight">
+            Ask Knowra
+          </h1>
+          <p className="text-neutral-600 mt-1 text-xs font-mono">
+            Grounding Repository: <strong className="text-neutral-900">{active?.name ?? "No Collection Selected"}</strong>
           </p>
         </div>
         <Select value={activeId ?? ""} onValueChange={(v) => setActiveId(v)}>
-          <SelectTrigger className="min-h-11 w-full sm:w-52" aria-label="Collection">
+          <SelectTrigger className="h-11 w-full sm:w-60 rounded-full border-neutral-300 bg-white text-xs font-bold font-['Chakra_Petch',sans-serif] uppercase tracking-wider shadow-sm" aria-label="Collection">
             <SelectValue placeholder="Select collection" />
           </SelectTrigger>
           <SelectContent>
             {collections.map((c) => (
-              <SelectItem key={c.id} value={c.id}>
+              <SelectItem key={c.id} value={c.id} className="font-mono text-xs">
                 {c.name}
               </SelectItem>
             ))}
@@ -130,21 +136,24 @@ function Ask() {
         </Select>
       </div>
 
-      <div className="mt-8 space-y-8">
+      <div className="space-y-6">
         {turns.map((turn, i) => (
-          <div key={i} className="space-y-3">
-            <p className="text-sm font-medium">{turn.question}</p>
+          <div key={i} className="space-y-3 bg-white p-6 rounded-3xl border border-neutral-200 shadow-lg">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#ff4500] font-bold">
+              <span>PROMPT QUERY #{i + 1}:</span>
+            </div>
+            <h3 className="text-base font-bold text-neutral-950">{turn.question}</h3>
             <AnswerView payload={turn.payload} />
             {turn.payload.followUps.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 pt-2">
                 {turn.payload.followUps.map((f) => (
                   <button
                     key={f}
                     onClick={() => void ask(f)}
                     disabled={busy}
-                    className="bg-elevated hover:border-[var(--border-strong)] min-h-10 rounded-full border px-3 text-xs transition-colors"
+                    className="bg-neutral-100 hover:bg-neutral-900 hover:text-white rounded-full border border-neutral-300 px-4 py-1.5 text-xs font-medium transition-all"
                   >
-                    {f}
+                    {f} →
                   </button>
                 ))}
               </div>
@@ -153,35 +162,35 @@ function Ask() {
         ))}
 
         {busy && (
-          <div className="panel text-muted-foreground flex items-center gap-3 p-4 text-sm">
-            <Loader2 className="text-primary size-4 animate-spin" />
-            {phase === "retrieving" && "Searching your documents…"}
-            {phase === "reading" && "Reading the retrieved passages…"}
-            {phase === "generating" && "Composing a grounded answer…"}
+          <div className="rounded-3xl border border-[#ff4500]/40 bg-neutral-950 text-white flex items-center gap-3 p-5 text-xs font-mono shadow-xl animate-pulse">
+            <Loader2 className="text-[#ff4500] size-4 animate-spin" />
+            {phase === "retrieving" && "SEARCHING PGVECTOR 3072D INDEX…"}
+            {phase === "reading" && "RERANKING CANDIDATE PASSAGES WITH CROSS-ENCODER…"}
+            {phase === "generating" && "COMPOSING GROUNDED ANSWER WITH VERBATIM CITATIONS…"}
           </div>
         )}
 
         {turns.length === 0 && !busy && (
-          <div className="panel text-muted-foreground p-6 text-sm">
-            <p className="text-foreground flex items-center gap-2 font-medium">
-              <Sparkles className="text-primary size-4" /> Ask anything about your documents
-            </p>
-            <p className="mt-2 leading-relaxed">
-              Knowra only answers from passages it can retrieve. If the evidence isn't there, it
-              will tell you instead of guessing.
+          <div className="rounded-3xl bg-neutral-950 text-white p-8 shadow-2xl relative overflow-hidden">
+            <div className="flex items-center gap-2 text-xs font-mono text-[#ff4500] font-bold uppercase tracking-widest">
+              <Sparkles className="size-4 animate-pulse text-[#ff4500]" /> Grounded AI Assistant Ready
+            </div>
+            <h2 className="font-['Orbitron',sans-serif] text-2xl font-bold mt-2">Ask anything across your uploaded documents</h2>
+            <p className="mt-3 text-neutral-400 text-xs font-mono leading-relaxed max-w-xl">
+              Knowra retrieves exact matching vector passages before synthesizing answers. If verified evidence is not found, the system explicitly reports missing context.
             </p>
           </div>
         )}
       </div>
 
       <form
-        className="bg-background sticky bottom-16 mt-8 md:bottom-4"
+        className="sticky bottom-4 z-20"
         onSubmit={(e) => {
           e.preventDefault();
           void ask(question);
         }}
       >
-        <div className="panel p-3">
+        <div className="rounded-3xl bg-white border border-neutral-300 p-4 shadow-2xl ring-1 ring-black/5">
           <Textarea
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
@@ -191,31 +200,34 @@ function Ask() {
                 void ask(question);
               }
             }}
-            placeholder="Ask a question about your documents…"
+            placeholder="Ask a question about your documents… (e.g., What are the Q3 audit metrics?)"
             rows={2}
-            className="resize-none border-0 bg-transparent p-0 shadow-none focus-visible:ring-0"
+            className="resize-none border-0 bg-transparent p-1 text-sm text-neutral-900 placeholder:text-neutral-400 focus-visible:ring-0 font-['Space_Grotesk',sans-serif]"
             aria-label="Your question"
           />
-          <div className="mt-2 flex items-center gap-2">
-            <Select value={mode} onValueChange={(v) => setMode(v as typeof mode)}>
-              <SelectTrigger className="h-9 w-32" aria-label="Answer style">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {MODES.map((m) => (
-                  <SelectItem key={m.value} value={m.value}>
-                    {m.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="mt-3 flex items-center justify-between border-t border-neutral-100 pt-3">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono text-neutral-400 uppercase tracking-wider hidden sm:inline">Style:</span>
+              <Select value={mode} onValueChange={(v) => setMode(v as typeof mode)}>
+                <SelectTrigger className="h-9 w-32 rounded-full border-neutral-300 bg-neutral-50 text-xs font-bold font-mono" aria-label="Answer style">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {MODES.map((m) => (
+                    <SelectItem key={m.value} value={m.value} className="text-xs font-mono">
+                      {m.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
             <Button
               type="submit"
               disabled={busy || question.trim().length < 2}
-              className="ml-auto min-h-11"
+              className="h-11 rounded-full bg-neutral-950 hover:bg-neutral-800 text-white font-['Chakra_Petch',sans-serif] font-bold text-xs uppercase tracking-wider px-6 shadow-md"
             >
-              {busy ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
-              Ask
+              {busy ? <Loader2 className="size-4 animate-spin mr-2" /> : <Send className="size-4 text-[#ff4500] mr-2" />}
+              Ask Knowra
             </Button>
           </div>
         </div>
