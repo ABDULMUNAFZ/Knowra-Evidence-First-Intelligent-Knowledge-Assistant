@@ -68,26 +68,26 @@ function Landing() {
       </div>
 
       {/* React Bits FaultyTerminal Ambient Background Layer */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.18]">
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
         <FaultyTerminal
           scale={1.5}
           gridMul={[2, 1]}
-          digitSize={1.2}
-          timeScale={0.8}
+          digitSize={1.4}
+          timeScale={1.2}
           pause={false}
-          scanlineIntensity={0.6}
-          glitchAmount={1}
-          flickerAmount={0.8}
-          noiseAmp={0.8}
-          chromaticAberration={0}
-          dither={0}
+          scanlineIntensity={0.8}
+          glitchAmount={1.2}
+          flickerAmount={1.0}
+          noiseAmp={1.0}
+          chromaticAberration={0.002}
+          dither={0.2}
           curvature={0.1}
           tint="#ff4500"
           mouseReact={true}
-          mouseStrength={0.5}
+          mouseStrength={0.8}
           pageLoadAnimation={false}
-          brightness={1}
-          lightMode={true}
+          brightness={1.6}
+          lightMode={false}
         />
       </div>
 

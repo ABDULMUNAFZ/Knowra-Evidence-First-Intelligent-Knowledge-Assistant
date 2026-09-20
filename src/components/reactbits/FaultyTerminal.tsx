@@ -349,11 +349,13 @@ export default function FaultyTerminal({
 
     function resize() {
       if (!ctn || !renderer) return;
-      renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
+      const width = ctn.offsetWidth || (typeof window !== "undefined" ? window.innerWidth : 1920);
+      const height = ctn.offsetHeight || (typeof window !== "undefined" ? window.innerHeight : 1080);
+      renderer.setSize(width, height);
       program.uniforms.iResolution.value = new Color(
         gl.canvas.width,
         gl.canvas.height,
-        gl.canvas.width / gl.canvas.height
+        gl.canvas.width / Math.max(1, gl.canvas.height)
       );
     }
 
