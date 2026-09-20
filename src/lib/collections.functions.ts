@@ -13,7 +13,7 @@ interface StoredCollection {
   status: "empty" | "ready" | "indexing" | "attention";
 }
 
-const memoryCollections = new Map<string, StoredCollection>([
+export const memoryCollections = new Map<string, StoredCollection>([
   [
     "00000000-0000-0000-0000-000000000001",
     {
