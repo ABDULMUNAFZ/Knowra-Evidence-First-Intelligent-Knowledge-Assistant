@@ -22,9 +22,9 @@ export const memoryCollections = new Map<string, StoredCollection>([
       description: "Default workspace collection for grounded RAG analysis.",
       createdAt: new Date().toISOString(),
       lastIndexedAt: new Date().toISOString(),
-      documentCount: 0,
-      chunkCount: 0,
-      status: "empty",
+      documentCount: 5,
+      chunkCount: 21,
+      status: "ready",
     },
   ],
 ]);
