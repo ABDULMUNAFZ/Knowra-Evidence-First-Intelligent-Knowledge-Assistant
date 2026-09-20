@@ -1,0 +1,186 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* Knowra dark-first palette */
+  --background: oklch(0.16 0.012 265);
+  --foreground: oklch(0.97 0.004 250);
+  --surface: oklch(0.19 0.014 265);
+  --elevated: oklch(0.23 0.018 266);
+  --card: oklch(0.19 0.014 265);
+  --card-foreground: oklch(0.97 0.004 250);
+  --popover: oklch(0.21 0.016 265);
+  --popover-foreground: oklch(0.97 0.004 250);
+
+  --primary: oklch(0.66 0.19 279);
+  --primary-foreground: oklch(0.99 0.003 250);
+  --secondary: oklch(0.26 0.02 266);
+  --secondary-foreground: oklch(0.95 0.005 250);
+  --muted: oklch(0.24 0.016 266);
+  --muted-foreground: oklch(0.68 0.02 262);
+  --accent: oklch(0.7 0.14 235);
+  --accent-foreground: oklch(0.15 0.01 265);
+
+  --destructive: oklch(0.63 0.2 24);
+  --destructive-foreground: oklch(0.98 0.004 250);
+  --success: oklch(0.72 0.15 158);
+  --warning: oklch(0.78 0.15 76);
+
+  --border: oklch(1 0 0 / 8%);
+  --border-strong: oklch(1 0 0 / 16%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.66 0.19 279);
+
+  --font-sans: "Sora", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-heading: "Space Grotesk", "Sora", sans-serif;
+  --font-display: "Syne", "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: color-mix(in oklch, var(--primary) 40%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@utility glass {
+  background: color-mix(in oklch, var(--surface) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid var(--border);
+}
+
+@utility panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+}
+
+@utility grid-texture {
+  background-image:
+    linear-gradient(to right, oklch(1 0 0 / 3%) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(1 0 0 / 3%) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@utility atmosphere {
+  background:
+    radial-gradient(
+      60rem 40rem at 15% -10%,
+      color-mix(in oklch, var(--primary) 26%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      50rem 34rem at 95% 8%,
+      color-mix(in oklch, var(--accent) 18%, transparent),
+      transparent 62%
+    );
+}
+
+@utility text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--foreground) 12%,
+    color-mix(in oklch, var(--primary) 70%, var(--foreground)) 70%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes knowra-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes knowra-highlight {
+  0% {
+    background-color: color-mix(in oklch, var(--primary) 45%, transparent);
+  }
+  100% {
+    background-color: color-mix(in oklch, var(--primary) 16%, transparent);
+  }
+}
+
+.evidence-highlight {
+  animation: knowra-highlight 1.4s ease-out forwards;
+  border-radius: 4px;
+  padding: 0 2px;
+}
+
+.pipeline-dot {
+  animation: knowra-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
