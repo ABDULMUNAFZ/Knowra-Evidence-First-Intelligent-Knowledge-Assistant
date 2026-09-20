@@ -139,7 +139,7 @@ const TextCursor: React.FC<TextCursorProps> = ({
                 }
               })
             }}
-            className="absolute select-none whitespace-nowrap font-mono text-xs font-black tracking-widest text-white bg-[#ff4500] border border-white/40 px-2.5 py-1 rounded-full shadow-lg shadow-[#ff4500]/40 backdrop-blur-md"
+            className="absolute select-none whitespace-nowrap font-['Chakra_Petch',sans-serif] text-xs font-bold tracking-widest text-[#ff4500] drop-shadow-sm"
             style={{ left: item.x, top: item.y }}
           >
             {text}
