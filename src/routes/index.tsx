@@ -1,12 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { ArrowRight, FileSearch, ShieldCheck, Quote, GitCompare, Sparkles, Zap, Database, CheckCircle2, Layers } from "lucide-react";
+import { ArrowRight, FileSearch, ShieldCheck, Quote, GitCompare, Sparkles, Zap, CheckCircle2, ArrowUpRight, Search, Database, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { KnowraWordmark } from "@/components/knowra/logo";
 import { EvidenceGraph } from "@/components/knowra/evidence-graph";
-import FaultyTerminal from "@/components/reactbits/FaultyTerminal";
 import TextCursor from "@/components/reactbits/TextCursor";
-import { CounterLoader } from "@/components/reactbits/CounterLoader";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -36,247 +33,218 @@ const PILLARS = [
     badge: "HYBRID SEARCH",
     title: "Hybrid Vector + BM25 Reranking",
     body: "Dense vector embeddings in pgvector coupled with keyword relevance, reranked with cross-encoder precision before LLM generation.",
-    accent: "from-indigo-500/20 to-purple-500/10",
+    accent: "bg-neutral-900 text-white",
   },
   {
     icon: Quote,
     badge: "100% TRACEABLE",
     title: "Exact Passage Citation Graph",
     body: "Every claim carries direct evidence links to document, page, section, and verbatim excerpts so nothing is assumed.",
-    accent: "from-purple-500/20 to-pink-500/10",
+    accent: "bg-[#ff4500] text-white",
   },
   {
     icon: ShieldCheck,
     badge: "STRICT ACCURACY",
     title: "Honest Uncertainty Scoring",
     body: "Retrieval scores, citation coverage and overlap are calculated algorithmically to detect missing context automatically.",
-    accent: "from-blue-500/20 to-indigo-500/10",
+    accent: "bg-neutral-100 border border-neutral-200 text-neutral-900",
   },
   {
     icon: GitCompare,
     badge: "CONFLICT RESOLUTION",
     title: "Multi-Document Conflict Awareness",
     body: "When documents present conflicting statements, both sources are surfaced transparently alongside source lineage.",
-    accent: "from-amber-500/20 to-orange-500/10",
+    accent: "bg-neutral-900 text-white",
   },
 ];
 
 function Landing() {
-  const [loading, setLoading] = useState(true);
-
   return (
-    <div className="relative min-h-screen bg-black text-foreground overflow-x-hidden selection:bg-indigo-500/30">
-      {/* 1. Counter Loader Component (Descending 100 to 1) */}
-      {loading && <CounterLoader onComplete={() => setLoading(false)} />}
-
-      {/* 2. TextCursor Interactive AI Trail from React Bits */}
+    <div className="relative min-h-screen bg-[#fcfbf9] text-neutral-900 overflow-x-hidden font-['Sora',sans-serif]">
+      {/* Interactive TextCursor AI Trail Overlay */}
       <div className="fixed inset-0 z-30 pointer-events-none">
-        <TextCursor text="AI" spacing={75} maxPoints={6} exitDuration={0.4} />
+        <TextCursor text="AI" spacing={80} maxPoints={5} exitDuration={0.3} />
       </div>
 
-      {/* 3. WebGL FaultyTerminal Canvas Background from React Bits */}
-      <div className="absolute inset-0 z-0 h-[850px] w-full overflow-hidden opacity-30 mix-blend-screen pointer-events-none">
-        <FaultyTerminal
-          scale={1.4}
-          gridMul={[2.5, 1.2]}
-          digitSize={1.3}
-          timeScale={0.4}
-          pause={false}
-          scanlineIntensity={0.2}
-          glitchAmount={0.8}
-          flickerAmount={0.5}
-          noiseAmp={0.9}
-          chromaticAberration={0.002}
-          dither={0}
-          curvature={0.15}
-          tint="#818cf8"
-          mouseReact={true}
-          mouseStrength={0.3}
-          brightness={0.85}
-        />
-        {/* Gradient Overlay for seamless blend */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/60 to-black pointer-events-none" />
-      </div>
-
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 pb-20">
-        {/* Floating Capsule Header (Inspired by Bento design style) */}
-        <header className="sticky top-4 z-40 mx-auto flex w-full max-w-4xl items-center justify-between rounded-full border border-white/10 bg-neutral-900/80 px-5 py-3 backdrop-blur-2xl shadow-2xl">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 pb-24">
+        
+        {/* Editorial Floating Navigation Bar */}
+        <header className="sticky top-4 z-40 mx-auto flex w-full max-w-5xl items-center justify-between rounded-full border border-neutral-200 bg-white/90 px-6 py-3.5 shadow-sm backdrop-blur-md">
           <Link to="/" className="flex items-center gap-2">
             <KnowraWordmark />
           </Link>
 
-          <nav className="hidden items-center gap-6 md:flex font-mono text-xs text-neutral-400">
-            <a href="#bento-grid" className="hover:text-white transition-colors">Architecture</a>
-            <a href="#pipeline" className="hover:text-white transition-colors">RAG Pipeline</a>
-            <a href="#features" className="hover:text-white transition-colors">Citations</a>
+          <nav className="hidden items-center gap-8 md:flex text-xs font-semibold uppercase tracking-wider text-neutral-600">
+            <a href="#bento-grid" className="hover:text-black transition-colors">Architecture</a>
+            <a href="#pipeline" className="hover:text-black transition-colors">RAG Pipeline</a>
+            <a href="#features" className="hover:text-black transition-colors">Citations</a>
           </nav>
 
-          <div className="flex items-center gap-2">
-            <Button asChild variant="ghost" size="sm" className="rounded-full text-xs hover:bg-white/10">
+          <div className="flex items-center gap-3">
+            <Button asChild variant="ghost" size="sm" className="rounded-full text-xs font-medium text-neutral-700 hover:bg-neutral-100">
               <Link to="/auth">Sign In</Link>
             </Button>
-            <Button asChild size="sm" className="rounded-full bg-indigo-600 text-xs font-semibold hover:bg-indigo-500 shadow-md shadow-indigo-600/30">
+            <Button asChild size="sm" className="rounded-full bg-[#ff4500] hover:bg-[#e03d00] text-white text-xs font-semibold px-5 shadow-md shadow-[#ff4500]/25 transition-all">
               <Link to="/auth">
-                <Zap className="mr-1.5 size-3.5 fill-current text-yellow-300" />
+                <Zap className="mr-1.5 size-3.5 fill-current text-white" />
                 Demo Account
               </Link>
             </Button>
           </div>
         </header>
 
-        {/* HERO BENTO GRID SECTION (Inspired by screenshot bento cards) */}
-        <section className="mt-10 grid gap-6 md:grid-cols-12">
-          
-          {/* Main Hero Card (Large Span 8) */}
-          <div className="relative overflow-hidden rounded-[2.5rem] border border-indigo-500/20 bg-neutral-900/80 p-8 sm:p-12 md:col-span-8 backdrop-blur-xl shadow-2xl transition-all hover:border-indigo-500/40">
-            <div className="absolute -top-24 -left-24 size-72 rounded-full bg-indigo-600/20 blur-3xl pointer-events-none" />
-
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-950/60 px-4 py-1.5 text-xs font-semibold tracking-wider text-indigo-300 uppercase">
-              <Sparkles className="size-3.5 text-indigo-400 animate-pulse" />
-              <span>Evidence-Grounded RAG System</span>
-            </div>
-
-            <h1 className="font-['Syne',sans-serif] text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.08] text-white">
-              BIG KNOWLEDGE, <br />
-              <span className="bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
-                BEAUTIFULLY TRACED.
-              </span>
-            </h1>
-
-            <p className="mt-6 max-w-xl text-base sm:text-lg text-neutral-300 leading-relaxed font-['Sora',sans-serif]">
-              Ask complex questions across your entire document repository and get grounded answers backed by verbatim passage citations.
-            </p>
-
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button asChild size="lg" className="h-13 rounded-2xl bg-indigo-600 px-7 text-sm font-semibold text-white shadow-xl shadow-indigo-600/30 hover:bg-indigo-500 hover:shadow-indigo-600/50 transition-all">
-                <Link to="/auth">
-                  <Zap className="mr-2 size-4 fill-current text-yellow-300" />
-                  Instant Demo Account (1-Click)
-                  <ArrowRight className="ml-2 size-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="h-13 rounded-2xl border-white/15 bg-white/5 px-6 text-sm font-medium text-white hover:bg-white/10 transition-all">
-                <Link to="/app">Open Workspace</Link>
-              </Button>
-            </div>
+        {/* HERO EDITORIAL SECTION (Inspired by Image 1 & Image 2) */}
+        <section className="mt-12 text-center max-w-5xl mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-1.5 text-xs font-semibold tracking-widest text-[#ff4500] uppercase shadow-sm">
+            <Sparkles className="size-3.5 text-[#ff4500]" />
+            <span>Evidence-First Intelligence</span>
           </div>
 
-          {/* Side Hero Stats Card (Span 4) */}
-          <div className="relative flex flex-col justify-between overflow-hidden rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-indigo-950/60 to-neutral-900/90 p-8 md:col-span-4 backdrop-blur-xl shadow-2xl">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-xs font-semibold uppercase tracking-widest text-indigo-400">PRECISION METRICS</span>
-              <span className="flex size-3 rounded-full bg-emerald-500 animate-ping" />
-            </div>
+          <h1 className="font-['Syne',sans-serif] text-5xl sm:text-7xl font-extrabold tracking-tight text-neutral-900 leading-[1.08] mt-6">
+            Redefine <br className="hidden sm:block" />
+            <span className="text-neutral-400 font-light">document intelligence.</span>
+          </h1>
 
-            <div className="my-6">
-              <div className="flex items-baseline gap-1">
-                <span className="font-['Syne',sans-serif] text-6xl font-black text-white">100</span>
-                <span className="font-mono text-2xl font-bold text-indigo-400">%</span>
-              </div>
-              <p className="mt-2 text-sm font-medium text-neutral-300">Grounded Passage Verification</p>
-              <p className="mt-1 text-xs text-neutral-400">Zero made-up citations or unverified quotes.</p>
-            </div>
+          <p className="mt-8 text-xl sm:text-2xl font-medium text-neutral-800 leading-relaxed max-w-4xl mx-auto font-['Space_Grotesk',sans-serif]">
+            Traceable Knowledge — is a RAG platform of{" "}
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4500] px-4 py-1 text-white font-bold align-middle shadow-md shadow-[#ff4500]/20 text-lg sm:text-xl">
+              <Zap className="size-4 fill-current" /> Grounded
+            </span>{" "}
+            answers that delivers the power of AI with{" "}
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-950 px-4 py-1 text-white font-bold align-middle text-lg sm:text-xl shadow-md">
+              <ShieldCheck className="size-4 text-emerald-400" /> Exact Citations
+            </span>
+          </p>
 
-            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 font-mono text-xs">
-              <div className="flex items-center justify-between text-neutral-400">
-                <span>RAG Hallucination Risk:</span>
-                <span className="font-bold text-emerald-400">0.00%</span>
-              </div>
-              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-neutral-800">
-                <div className="h-full w-full bg-emerald-500" />
-              </div>
-            </div>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <Button asChild size="lg" className="h-14 rounded-full bg-neutral-950 hover:bg-neutral-800 text-white px-8 text-base font-semibold shadow-xl transition-all">
+              <Link to="/auth">
+                <Zap className="mr-2 size-5 fill-current text-[#ff4500]" />
+                Instant Demo Access (1-Click)
+                <ArrowRight className="ml-2 size-5" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="h-14 rounded-full border-neutral-300 bg-white text-neutral-900 px-8 text-base font-medium hover:bg-neutral-100 transition-all shadow-sm">
+              <Link to="/app">Open Workspace</Link>
+            </Button>
           </div>
         </section>
 
-        {/* Interactive Evidence Visualizer Bento Row */}
-        <section className="mt-6">
-          <div className="overflow-hidden rounded-[2.5rem] border border-white/10 bg-neutral-900/90 p-8 backdrop-blur-xl">
+        {/* HIGH-CONTRAST BENTO GRID (Directly matching Image 1 & Image 2) */}
+        <section id="bento-grid" className="mt-16 grid gap-6 md:grid-cols-12">
+          
+          {/* Bento Card 1: Large Deep Black Card */}
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-neutral-950 text-white p-8 sm:p-10 md:col-span-7 shadow-2xl flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-xs font-semibold tracking-widest uppercase text-neutral-400">HYBRID RERANKING</span>
+              <span className="size-3 rounded-full bg-[#ff4500]" />
+            </div>
+
+            <div className="my-8">
+              <h3 className="font-['Syne',sans-serif] text-3xl sm:text-4xl font-extrabold leading-tight">
+                Bold strategies <br /> that shape grounded answers.
+              </h3>
+              <p className="mt-4 text-neutral-400 text-sm sm:text-base max-w-lg leading-relaxed">
+                Vector similarity in pgvector combined with keyword relevance, reranked with cross-encoders before reaching the model.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 font-mono text-xs text-neutral-300 pt-4 border-t border-white/10">
+              <span className="px-3 py-1 rounded-full bg-white/10">pgvector 3072D</span>
+              <span className="px-3 py-1 rounded-full bg-white/10">BM25 Hybrid</span>
+            </div>
+          </div>
+
+          {/* Bento Card 2: Fiery Coral Orange Accent Card */}
+          <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#ff4500] via-[#f97316] to-[#e03d00] text-white p-8 sm:p-10 md:col-span-5 shadow-2xl shadow-[#ff4500]/20 flex flex-col justify-between">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-xs font-semibold tracking-widest uppercase text-white/80">ACCURACY METRICS</span>
+              <ArrowUpRight className="size-6 text-white" />
+            </div>
+
+            <div className="my-6">
+              <span className="font-['Syne',sans-serif] text-6xl sm:text-7xl font-black tracking-tight">100%</span>
+              <h4 className="font-['Space_Grotesk',sans-serif] text-xl font-bold mt-2">Verified Passage Citations</h4>
+              <p className="text-white/90 text-sm mt-2 leading-relaxed">
+                Every output quote carries direct links to document name, page number, and verbatim excerpt.
+              </p>
+            </div>
+
+            <div className="inline-flex items-center justify-between rounded-2xl bg-black/20 p-3.5 backdrop-blur-md text-xs font-medium">
+              <span>Hallucination Rate:</span>
+              <span className="font-mono font-bold text-white">0.00%</span>
+            </div>
+          </div>
+
+          {/* Bento Card 3: Live Evidence Graph Card */}
+          <div className="rounded-[2.5rem] bg-white border border-neutral-200 p-8 md:col-span-12 shadow-xl">
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="font-mono text-xs uppercase tracking-widest text-purple-400">LIVE RAG GRAPH</span>
-                <h2 className="font-['Space_Grotesk',sans-serif] text-2xl font-bold text-white mt-1">Grounded Citation Graph Engine</h2>
+                <span className="font-mono text-xs uppercase tracking-widest text-[#ff4500]">LIVE CITATION GRAPH</span>
+                <h2 className="font-['Syne',sans-serif] text-2xl font-bold text-neutral-900 mt-1">Traceable Evidence Explorer</h2>
               </div>
-              <div className="flex items-center gap-3 text-xs text-neutral-400 font-mono">
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="size-4 text-emerald-400" /> Vector Similarity</span>
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="size-4 text-indigo-400" /> Page Chunking</span>
+              <div className="flex items-center gap-4 text-xs text-neutral-600 font-mono">
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="size-4 text-[#ff4500]" /> Vector Rerank</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="size-4 text-neutral-900" /> Verbatim Quotes</span>
               </div>
             </div>
             <EvidenceGraph />
           </div>
-        </section>
 
-        {/* PILLARS BENTO GRID (4 Bento Cards with high-contrast borders and curved corners) */}
-        <section id="bento-grid" className="mt-12">
-          <div className="mb-8">
-            <span className="font-mono text-xs uppercase tracking-widest text-indigo-400">SYSTEM ARCHITECTURE</span>
-            <h2 className="font-['Syne',sans-serif] text-3xl sm:text-4xl font-extrabold text-white mt-1">
-              Engineered for absolute accuracy.
-            </h2>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {PILLARS.map((p) => (
-              <div
-                key={p.title}
-                className="group relative flex flex-col justify-between overflow-hidden rounded-[2.5rem] border border-white/10 bg-neutral-900/80 p-7 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/10"
-              >
-                <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${p.accent} opacity-0 transition-opacity group-hover:opacity-100`} />
-                
-                <div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex size-12 items-center justify-center rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 group-hover:scale-110 transition-transform">
-                      <p.icon className="size-6" />
-                    </div>
-                    <span className="font-mono text-[10px] font-semibold tracking-wider text-indigo-300 uppercase px-2.5 py-1 rounded-full border border-indigo-500/20 bg-indigo-950/40">
-                      {p.badge}
-                    </span>
-                  </div>
-
-                  <h3 className="font-['Space_Grotesk',sans-serif] text-xl font-bold text-white mt-6">
-                    {p.title}
-                  </h3>
-                  <p className="mt-3 text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                    {p.body}
-                  </p>
+          {/* Bento Feature Cards Matrix */}
+          {PILLARS.map((p, idx) => (
+            <div
+              key={p.title}
+              className={`rounded-[2.5rem] ${p.accent} p-8 shadow-xl flex flex-col justify-between md:col-span-6 transition-all hover:-translate-y-1`}
+            >
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold tracking-wider uppercase opacity-80">0{idx + 1} — {p.badge}</span>
+                  <p.icon className="size-6" />
                 </div>
-
-                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-indigo-400 font-medium">
-                  <span>Learn more</span>
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </div>
+                <h3 className="font-['Syne',sans-serif] text-2xl font-bold mt-6">{p.title}</h3>
+                <p className="mt-3 text-sm opacity-90 leading-relaxed">{p.body}</p>
               </div>
-            ))}
-          </div>
+
+              <div className="mt-8 pt-4 border-t border-current/10 flex items-center justify-between text-xs font-semibold">
+                <span>Explore Component</span>
+                <ArrowRight className="size-4" />
+              </div>
+            </div>
+          ))}
         </section>
 
-        {/* 5-STEP RAG PIPELINE BANNER */}
-        <section id="pipeline" className="mt-12 rounded-[2.5rem] border border-white/10 bg-gradient-to-r from-neutral-950 via-neutral-900 to-indigo-950/50 p-8 backdrop-blur-xl">
-          <div className="mb-6 flex items-center justify-between">
-            <span className="font-mono text-xs uppercase tracking-widest text-indigo-400">DATA FLOW PIPELINE</span>
-            <span className="font-mono text-xs text-neutral-400">5-STAGE PROCESSING</span>
+        {/* RAG PIPELINE STEPPERS (Matching Image 1 Footer Stepper) */}
+        <section id="pipeline" className="mt-16 rounded-[2.5rem] bg-neutral-950 text-white p-8 sm:p-10 shadow-2xl">
+          <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-6">
+            <div>
+              <span className="font-mono text-xs uppercase tracking-widest text-[#ff4500]">RAG ARCHITECTURE</span>
+              <h3 className="font-['Syne',sans-serif] text-2xl font-bold mt-1">5-Step Grounded Pipeline</h3>
+            </div>
+            <span className="font-mono text-xs text-neutral-400">INSTANT INDEXING</span>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-5">
             {[
-              { step: "01", title: "Document Upload", desc: "PDF, TXT, MD, DOCX" },
-              { step: "02", title: "Chunk & Context", desc: "Page & section tags" },
-              { step: "03", title: "Embed & Index", desc: "pgvector 3072D" },
-              { step: "04", title: "Hybrid Rerank", desc: "Vector + Keyword" },
-              { step: "05", title: "Cite & Verify", desc: "Verbatim excerpts" },
-            ].map((s) => (
-              <div key={s.step} className="rounded-2xl border border-white/10 bg-black/50 p-5 transition-all hover:border-indigo-500/40">
-                <span className="font-mono text-xs font-bold text-indigo-400">{s.step}</span>
-                <h4 className="font-['Space_Grotesk',sans-serif] text-sm font-bold text-white mt-2">{s.title}</h4>
-                <p className="text-[11px] text-neutral-400 mt-1">{s.desc}</p>
+              { num: "01", label: "Upload", detail: "PDF, TXT, MD, DOCX" },
+              { num: "02", label: "Chunk & Context", detail: "Page & section tags" },
+              { num: "03", label: "Embed & Index", detail: "3072D Vector Store" },
+              { num: "04", label: "Retrieve & Rerank", detail: "Hybrid Cross-Encoder" },
+              { num: "05", label: "Cite & Verify", detail: "Verbatim Passages" },
+            ].map((step) => (
+              <div key={step.num} className="rounded-2xl bg-neutral-900 border border-white/10 p-5 hover:border-[#ff4500]/50 transition-colors">
+                <span className="font-mono text-xs font-bold text-[#ff4500]">{step.num}</span>
+                <h4 className="font-['Space_Grotesk',sans-serif] text-base font-bold mt-2">{step.label}</h4>
+                <p className="text-xs text-neutral-400 mt-1">{step.detail}</p>
               </div>
             ))}
           </div>
         </section>
+
       </div>
 
-      <footer className="border-t border-white/10 bg-black py-8 text-center text-xs font-mono text-neutral-500">
-        Traceable Knowledge Base — Grounded answers with verbatim citations.
+      <footer className="border-t border-neutral-200 bg-white py-10 text-center text-xs font-mono text-neutral-500">
+        Traceable Knowledge Studio © 2026 — Evidence-first RAG with verbatim citations.
       </footer>
     </div>
   );
