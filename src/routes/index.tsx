@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { KnowraWordmark } from "@/components/knowra/logo";
 import { EvidenceGraph } from "@/components/knowra/evidence-graph";
 import TextCursor from "@/components/reactbits/TextCursor";
+import FaultyTerminal from "@/components/reactbits/FaultyTerminal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,6 +65,30 @@ function Landing() {
       {/* Interactive TextCursor AI Trail Overlay */}
       <div className="fixed inset-0 z-30 pointer-events-none">
         <TextCursor text="AI" spacing={80} maxPoints={5} exitDuration={0.3} />
+      </div>
+
+      {/* React Bits FaultyTerminal Ambient Background Layer */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.18]">
+        <FaultyTerminal
+          scale={1.5}
+          gridMul={[2, 1]}
+          digitSize={1.2}
+          timeScale={0.8}
+          pause={false}
+          scanlineIntensity={0.6}
+          glitchAmount={1}
+          flickerAmount={0.8}
+          noiseAmp={0.8}
+          chromaticAberration={0}
+          dither={0}
+          curvature={0.1}
+          tint="#ff4500"
+          mouseReact={true}
+          mouseStrength={0.5}
+          pageLoadAnimation={false}
+          brightness={1}
+          lightMode={true}
+        />
       </div>
 
       {/* FULL-PAGE VIEWPORT HERO SECTION */}
