@@ -194,61 +194,6 @@ function AuthPage() {
           </div>
         </div>
 
-        {/* Direct Email / Password Sign In Form */}
-        <div className="rounded-[2.5rem] bg-white border border-neutral-200 p-8 shadow-xl">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-['Syne',sans-serif] text-xl font-bold">
-              {mode === "signin" ? "Sign In Credentials" : "Create Account"}
-            </h2>
-            <span className="text-xs font-mono text-[#ff4500] font-bold">demo@gmail.com</span>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1.5">
-              <Label htmlFor="email" className="text-xs font-bold uppercase text-neutral-600">Email Address</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="demo@gmail.com"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-12 rounded-xl bg-neutral-50 border-neutral-300 font-mono text-sm"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="password" className="text-xs font-bold uppercase text-neutral-600">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Demo12345"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="h-12 rounded-xl bg-neutral-50 border-neutral-300 font-mono text-sm"
-              />
-            </div>
-
-            <Button type="submit" className="h-12 w-full rounded-full bg-neutral-950 hover:bg-neutral-800 text-white font-bold transition-all" disabled={busy}>
-              {mode === "signin" ? "Sign In to Workspace →" : "Create Account →"}
-            </Button>
-          </form>
-
-          <div className="my-5 flex items-center gap-3 text-xs text-neutral-400 font-mono">
-            <span className="h-px flex-1 bg-neutral-200" /> OR <span className="h-px flex-1 bg-neutral-200" />
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            className="h-12 w-full rounded-full border-neutral-300 bg-white hover:bg-neutral-100 font-medium text-neutral-900"
-            onClick={handleGoogle}
-            disabled={busy}
-          >
-            Continue with Google
-          </Button>
-        </div>
-
         {/* Security & Trust Footer */}
         <div className="flex items-center justify-center gap-4 text-xs font-mono text-neutral-500">
           <span className="flex items-center gap-1">
