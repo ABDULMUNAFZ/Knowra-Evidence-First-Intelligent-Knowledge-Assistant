@@ -60,31 +60,32 @@ const PILLARS = [
 
 function Landing() {
   return (
-    <div className="relative min-h-screen bg-[#fcfbf9] text-neutral-900 overflow-x-hidden font-['Sora',sans-serif]">
+    <div className="relative min-h-screen bg-[#fcfbf9] text-neutral-900 overflow-x-hidden font-['Space_Grotesk',sans-serif]">
       {/* Interactive TextCursor AI Trail Overlay */}
       <div className="fixed inset-0 z-30 pointer-events-none">
         <TextCursor text="AI" spacing={80} maxPoints={5} exitDuration={0.3} />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 pb-24">
+      {/* FULL-PAGE VIEWPORT HERO SECTION */}
+      <div className="min-h-screen flex flex-col justify-between mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 relative z-10">
         
-        {/* Editorial Floating Navigation Bar */}
-        <header className="sticky top-4 z-40 mx-auto flex w-full max-w-5xl items-center justify-between rounded-full border border-neutral-200 bg-white/90 px-6 py-3.5 shadow-sm backdrop-blur-md">
+        {/* Floating Navigation Header */}
+        <header className="mx-auto flex w-full max-w-5xl items-center justify-between rounded-full border border-neutral-200 bg-white/90 px-6 py-3 shadow-sm backdrop-blur-md">
           <Link to="/" className="flex items-center gap-2">
             <KnowraWordmark />
           </Link>
 
-          <nav className="hidden items-center gap-8 md:flex text-xs font-semibold uppercase tracking-wider text-neutral-600">
+          <nav className="hidden items-center gap-8 md:flex text-xs font-bold uppercase tracking-widest text-neutral-600 font-['Chakra_Petch',sans-serif]">
             <a href="#bento-grid" className="hover:text-black transition-colors">Architecture</a>
             <a href="#pipeline" className="hover:text-black transition-colors">RAG Pipeline</a>
             <a href="#features" className="hover:text-black transition-colors">Citations</a>
           </nav>
 
           <div className="flex items-center gap-3">
-            <Button asChild variant="ghost" size="sm" className="rounded-full text-xs font-medium text-neutral-700 hover:bg-neutral-100">
+            <Button asChild variant="ghost" size="sm" className="rounded-full text-xs font-semibold text-neutral-700 hover:bg-neutral-100">
               <Link to="/auth">Sign In</Link>
             </Button>
-            <Button asChild size="sm" className="rounded-full bg-[#ff4500] hover:bg-[#e03d00] text-white text-xs font-semibold px-5 shadow-md shadow-[#ff4500]/25 transition-all">
+            <Button asChild size="sm" className="rounded-full bg-[#ff4500] hover:bg-[#e03d00] text-white text-xs font-bold px-5 shadow-md shadow-[#ff4500]/25 transition-all">
               <Link to="/auth">
                 <Zap className="mr-1.5 size-3.5 fill-current text-white" />
                 Demo Account
@@ -93,14 +94,14 @@ function Landing() {
           </div>
         </header>
 
-        {/* HERO EDITORIAL SECTION (Inspired by Image 1 & Image 2) */}
-        <section className="mt-12 text-center max-w-5xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-1.5 text-xs font-semibold tracking-widest text-[#ff4500] uppercase shadow-sm">
-            <Sparkles className="size-3.5 text-[#ff4500]" />
+        {/* HERO CENTER CONTENT (Fitted in single viewport page) */}
+        <section className="my-auto py-8 text-center max-w-5xl mx-auto flex flex-col items-center justify-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-5 py-2 text-xs font-bold tracking-widest text-[#ff4500] uppercase shadow-sm font-['Chakra_Petch',sans-serif]">
+            <Sparkles className="size-4 text-[#ff4500]" />
             <span>Evidence-First Intelligence</span>
           </div>
 
-          <h1 className="font-['Syne',sans-serif] text-5xl sm:text-7xl font-extrabold tracking-tight text-neutral-900 leading-[1.08] mt-6">
+          <h1 className="font-['Orbitron',sans-serif] text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-neutral-950 leading-[1.05] mt-6">
             Redefine <br className="hidden sm:block" />
             <span className="text-neutral-400 font-light">document intelligence.</span>
           </h1>
@@ -108,7 +109,7 @@ function Landing() {
           <p className="mt-8 text-xl sm:text-2xl font-medium text-neutral-800 leading-relaxed max-w-4xl mx-auto font-['Space_Grotesk',sans-serif]">
             Traceable Knowledge — is a RAG platform of{" "}
             <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ff4500] px-4 py-1 text-white font-bold align-middle shadow-md shadow-[#ff4500]/20 text-lg sm:text-xl">
-              <Zap className="size-4 fill-current" /> Grounded
+              <Zap className="size-4 fill-current text-white" /> Grounded
             </span>{" "}
             answers that delivers the power of AI with{" "}
             <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-950 px-4 py-1 text-white font-bold align-middle text-lg sm:text-xl shadow-md">
@@ -117,18 +118,34 @@ function Landing() {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Button asChild size="lg" className="h-14 rounded-full bg-neutral-950 hover:bg-neutral-800 text-white px-8 text-base font-semibold shadow-xl transition-all">
+            <Button asChild size="lg" className="h-14 rounded-full bg-neutral-950 hover:bg-neutral-800 text-white px-8 text-base font-bold shadow-xl transition-all font-['Chakra_Petch',sans-serif] tracking-wider uppercase">
               <Link to="/auth">
                 <Zap className="mr-2 size-5 fill-current text-[#ff4500]" />
                 Instant Demo Access (1-Click)
                 <ArrowRight className="ml-2 size-5" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="h-14 rounded-full border-neutral-300 bg-white text-neutral-900 px-8 text-base font-medium hover:bg-neutral-100 transition-all shadow-sm">
+            <Button asChild variant="outline" size="lg" className="h-14 rounded-full border-neutral-300 bg-white text-neutral-950 px-8 text-base font-bold hover:bg-neutral-100 transition-all shadow-sm font-['Chakra_Petch',sans-serif] tracking-wider uppercase">
               <Link to="/app">Open Workspace</Link>
             </Button>
           </div>
         </section>
+
+        {/* Hero Bottom Metric Scroll Teaser */}
+        <div className="flex items-center justify-between border-t border-neutral-200/80 pt-4 pb-2 text-xs font-mono text-neutral-500 uppercase tracking-widest">
+          <div className="flex items-center gap-2">
+            <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>JARVIS HYBRID RAG ENGINE v2.4</span>
+          </div>
+          <a href="#bento-grid" className="hover:text-black transition-colors flex items-center gap-1">
+            <span>Scroll for Architecture</span>
+            <ArrowRight className="size-3 rotate-90" />
+          </a>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-24">
+
 
         {/* HIGH-CONTRAST BENTO GRID (Directly matching Image 1 & Image 2) */}
         <section id="bento-grid" className="mt-16 grid gap-6 md:grid-cols-12">
@@ -141,7 +158,7 @@ function Landing() {
             </div>
 
             <div className="my-8">
-              <h3 className="font-['Syne',sans-serif] text-3xl sm:text-4xl font-extrabold leading-tight">
+              <h3 className="font-['Orbitron',sans-serif] text-3xl sm:text-4xl font-extrabold leading-tight">
                 Bold strategies <br /> that shape grounded answers.
               </h3>
               <p className="mt-4 text-neutral-400 text-sm sm:text-base max-w-lg leading-relaxed">
@@ -181,7 +198,7 @@ function Landing() {
             <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <span className="font-mono text-xs uppercase tracking-widest text-[#ff4500]">LIVE CITATION GRAPH</span>
-                <h2 className="font-['Syne',sans-serif] text-2xl font-bold text-neutral-900 mt-1">Traceable Evidence Explorer</h2>
+                <h2 className="font-['Orbitron',sans-serif] text-2xl font-bold text-neutral-900 mt-1">Traceable Evidence Explorer</h2>
               </div>
               <div className="flex items-center gap-4 text-xs text-neutral-600 font-mono">
                 <span className="flex items-center gap-1.5"><CheckCircle2 className="size-4 text-[#ff4500]" /> Vector Rerank</span>
